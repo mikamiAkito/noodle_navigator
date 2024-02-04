@@ -15,7 +15,6 @@ export default {
   mounted() {
     // Google Maps API を読み込む
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAJVptrv7OD0G6C0D6eAl_EGG0m0NaUtSA&callback=initMap`;
     script.defer = true;
     script.async = true;
     window.initMap = this.initMap;
