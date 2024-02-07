@@ -1,13 +1,13 @@
 <script setup>
 import GoogleMap from '@/Components/GoogleMap.vue';
-
+import HeaderPage from '@/Components/HeaderPage.vue';
+import CradPage from '@/Components/CradPage.vue';
 </script>
 
 <template>
   <div>
-    <header>
-      ヘッダー
-    </header>
-    <GoogleMap/>
+    <HeaderPage></HeaderPage>
+    <GoogleMap></GoogleMap>
+    <CradPage></CradPage>
   </div>
 </template>
