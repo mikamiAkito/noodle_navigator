@@ -5,7 +5,7 @@ import { onMounted } from 'vue';
 const loadGoogleMapsAPI = () => {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key= aaa &libraries=places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key= &libraries=places`;
     script.onload = resolve;
     script.onerror = reject;
     document.head.appendChild(script);
@@ -20,14 +20,18 @@ onMounted(async () => {
     // マップの初期設定
     const map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: -33.8688, lng: 151.2195 },
-      zoom: 13,
+      zoom: 15,
       mapTypeId: "roadmap",
+      mapTypeControl: false,
+      streetViewControl: false,
     });
 
     // 検索ボックスをマップに追加
     const input = document.getElementById("pac-input");
+    const kennsaku = document.getElementById("s-btn");
     const searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(input);
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(kennsaku);
 
     // マーカーを管理する配列
     let markers = [];
@@ -80,17 +84,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <!-- マップを表示するコンテナー -->
-    <div id="map"></div>
-    <!-- 検索ボックス -->
+  <div class="border-solid border-2 border-blue-700 flex justify-center">
+    <div id="map" class=""></div>
     <input id="pac-input" type="text" placeholder="Enter a location">
+    <div id="s-btn" class="border-solid border-2 border-red-600">
+      <button>検索</button>
+    </div>
   </div>
 </template>
 
 <style scoped>
 #map {
-  height: 400px; /* マップの高さを指定 */
-  width: 100%; /* マップの幅を指定 */
+  height: 600px; /* マップの高さを指定 */
+  width: 90%; /* マップの幅を指定 */
 }
 </style>
