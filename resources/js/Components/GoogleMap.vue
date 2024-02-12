@@ -1,5 +1,8 @@
 <script setup>
 import { onMounted } from 'vue';
+let infoWindow;
+
+console.log(import.meta.env.MODE);
 
 // Google Maps API の読み込みを非同期で行う
 const loadGoogleMapsAPI = () => {
@@ -26,6 +29,39 @@ onMounted(async () => {
       streetViewControl: false,
     });
 
+    //現在地取得準備
+    infoWindow = new google.maps.InfoWindow();
+
+    // マーカーを管理する配列
+    let markers = [];
+
+    //現在地取得
+    const getCurrentlocation = () => {
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];
+
+      if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent("Location found.");
+            infoWindow.open(map);
+            map.setCenter(pos);
+          },
+          () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+          }
+        );
+      }else{
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    }
+
     // 検索ボックスをマップに追加
     const input = document.getElementById("pac-input");
     const kennsaku = document.getElementById("s-btn");
@@ -33,8 +69,12 @@ onMounted(async () => {
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(input);
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(kennsaku);
 
-    // マーカーを管理する配列
-    let markers = [];
+    getCurrentlocation();
+
+    //現在地へ移動
+    kennsaku.addEventListener("click", () => {
+      getCurrentlocation();
+    });
 
     // マップの範囲が変更されたときに検索ボックスの範囲を更新
     map.addListener("bounds_changed", () => {
