@@ -2,13 +2,11 @@
 import { onMounted } from 'vue';
 let infoWindow;
 
-console.log(import.meta.env.MODE);
-
 // Google Maps API の読み込みを非同期で行う
 const loadGoogleMapsAPI = () => {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key= &libraries=places`;
+    script.src = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
     script.onload = resolve;
     script.onerror = reject;
     document.head.appendChild(script);
@@ -64,14 +62,16 @@ onMounted(async () => {
 
     // 検索ボックスをマップに追加
     const input = document.getElementById("pac-input");
-    const kennsaku = document.getElementById("s-btn");
     const searchBox = new google.maps.places.SearchBox(input);
+    //現在地ボタンをマップへ追加
+    const kennsaku = document.getElementById("s-btn");
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(input);
     map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(kennsaku);
 
+    //ロード時現在地へ移動
     getCurrentlocation();
 
-    //現在地へ移動
+    //ボタンクリック時現在地へ移動
     kennsaku.addEventListener("click", () => {
       getCurrentlocation();
     });
@@ -117,6 +117,7 @@ onMounted(async () => {
       // マップを検索結果の範囲にフィット
       map.fitBounds(bounds);
     });
+
   } catch (error) {
     console.error('Failed to load Google Maps API:', error);
   }
