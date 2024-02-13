@@ -48,7 +48,7 @@ const loadGoogleMapsAPI = () => {
   //現在地ボタンをマップへ追加
   const current = document.getElementById("s-btn");
   map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(input);
-  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(current);
+  map.controls[google.maps.ControlPosition.LEFT_CENTER].push(current);
 
   //ロード時現在地へ移動
   getCurrentlocation();
@@ -112,8 +112,8 @@ document.head.appendChild(script);
   <div class="border-solid border-2 border-blue-700 flex justify-center">
     <div id="map" class=""></div>
     <input id="pac-input" type="text" placeholder="Enter a location">
-    <div id="s-btn" class="border-solid border-2 border-red-600">
-      <button>検索</button>
+    <div id="s-btn" class="border-solid border-2 border-blue-600 rounded-sm">
+      <button class="bg-blue-300 transition duration-700 hover:bg-blue-400 w-20 h-12 not-italic font-thin text-base">現在地</button>
     </div>
   </div>
 </template>
