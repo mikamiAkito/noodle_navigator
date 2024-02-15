@@ -1,4 +1,7 @@
 <script setup>
+import Modal from './Modal.vue';
+import { ref } from 'vue';
+
 const loadGoogleMapsAPI = () => {
   // マップの初期設定
   const map = new google.maps.Map(document.getElementById("map"), {
@@ -7,6 +10,7 @@ const loadGoogleMapsAPI = () => {
     mapTypeId: "roadmap",
     mapTypeControl: false,
     streetViewControl: false,
+    fullscreenControl: false,
   });
 
   //現在地取得準備
@@ -44,11 +48,22 @@ const loadGoogleMapsAPI = () => {
 
   // 検索ボックスをマップに追加
   const input = document.getElementById("pac-input");
+  input.style.margin = "10px 10px 10px 10px";
   const searchBox = new google.maps.places.SearchBox(input);
   //現在地ボタンをマップへ追加
-  const current = document.getElementById("s-btn");
-  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(input);
-  map.controls[google.maps.ControlPosition.LEFT_CENTER].push(current);
+  const current = document.getElementById("current-btn");
+  current.style.margin = "10px 10px 10px 10px";
+  //駅検索ボタンをマップへ追加
+  const stationbtn = document.getElementById("search-btn");
+  stationbtn.style.margin = "10px 10px 10px 10px";
+
+  // stationbtn.addEventListener("click", () => {
+
+  // });
+
+  map.controls[google.maps.ControlPosition.RIGHT_TOP].push(input);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(stationbtn);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(current);
 
   //ロード時現在地へ移動
   getCurrentlocation();
@@ -106,21 +121,41 @@ const script = document.createElement('script');
 script.src = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 script.onload = loadGoogleMapsAPI;
 document.head.appendChild(script);
+
+//モーダル処理
+const modalshow = ref(false);
+
+const openModal = () => {
+  modalshow.value = true;
+};
+
+const closeModal = () => {
+  modalshow.value = false;
+};
 </script>
 
 <template>
   <div class="border-solid border-2 border-blue-700 flex justify-center">
     <div id="map" class=""></div>
     <input id="pac-input" type="text" placeholder="Enter a location">
-    <div id="s-btn" class="border-solid border-2 border-blue-600 rounded-sm">
+    <div id="current-btn" class="border-solid border-2 border-blue-600 rounded-sm">
       <button class="bg-blue-300 transition duration-700 hover:bg-blue-400 w-20 h-12 not-italic font-thin text-base">現在地</button>
     </div>
+    <div id="search-btn" class="border-solid border-2 border-red-600 rounded-sm">
+      <button @click="openModal" class="bg-red-300 transition duration-700 hover:bg-red-400 w-20 h-12 not-italic font-thin text-base">駅検索</button>
+    </div>
+    <!--モーダル-->    
+    <Modal :show="modalshow" @close="closeModal">
+      <p>This is the modal content.</p>
+      <button @click="closeModal" class="bg-red-700">閉じる</button>
+    </Modal>
+
   </div>
 </template>
 
 <style scoped>
 #map {
   height: 600px; /* マップの高さを指定 */
-  width: 90%; /* マップの幅を指定 */
+  width: 100%; /* マップの幅を指定 */
 }
 </style>

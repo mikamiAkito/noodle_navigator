@@ -29,6 +29,10 @@ Route::get('/', function () {
     return Inertia::render('HomePage');
 });
 
+// Route::get('/modal-pages', function () {
+//     return Inertia::render('ModalPages');
+// });
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
