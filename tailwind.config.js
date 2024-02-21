@@ -16,6 +16,22 @@ module.exports = {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            scale: {
+                '450': '4.5',
+            },
+            keyframes: {
+                gnaviAnime: {
+                    '0%': {
+                        opacity: '0'
+                    },
+                    '100%': {
+                        opacity: '1'
+                    }
+                }
+            },
+            animation: {
+                gnaviAnime: 'gnaviAnime',
+            },
         },
     },
 
