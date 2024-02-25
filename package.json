@@ -23,6 +23,7 @@
         "@heroicons/vue": "^2.1.1",
         "flowbite": "^2.3.0",
         "flowbite-vue": "^0.1.2",
+        "tailwindcss-animated": "^1.0.1",
         "vue3-google-map": "^0.19.0"
     }
 }

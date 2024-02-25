@@ -32,11 +32,19 @@ module.exports = {
             animation: {
                 gnaviAnime: 'gnaviAnime',
             },
+            colors: {
+                'raba': 'rgba(0,0,0,0.4)'
+            },
+            height: {
+                '13': '3.2rem',
+                '18': '4.5rem'
+            }
         },
     },
 
     plugins: [
         require('@tailwindcss/forms'),
-        require('flowbite/plugin')
+        require('flowbite/plugin'),
+        require('tailwindcss-animated')
     ],
 };

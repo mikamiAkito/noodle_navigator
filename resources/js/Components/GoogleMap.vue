@@ -1,6 +1,38 @@
 <script setup>
 let map;
 let infoWindow;
+let service;
+
+const initMap = async () => {
+  //初期処理
+  const position = { lat: -25.344, lng: 131.031 };
+  const { Map } = await google.maps.importLibrary("maps");
+  const { PlacesService } = await google.maps.importLibrary("places");
+
+  //マップ読み込み
+  map = new Map(document.getElementById("map"), {
+    zoom: 15,
+    center: position,
+    mapId: "DEMO_MAP_ID",
+    mapTypeControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
+  });
+
+  //インスタンス化
+  infoWindow = new google.maps.InfoWindow();
+  service = new PlacesService(map);
+
+  //ボタン追加
+  const locationButton = document.getElementById("current-btn");
+  const searchButton = document.getElementById("search-btn");
+  const ramenSearchButton  = document.getElementById("ramen-search");
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(searchButton);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(ramenSearchButton);
+  //ロード時現在地へ
+  getCurrentlocation();
+}
 
 //現在地取得処理
 const getCurrentlocation = () => {
@@ -26,43 +58,71 @@ const getCurrentlocation = () => {
   }
 }
 
-async function initMap() {
-  //初期処理
-  const position = { lat: -25.344, lng: 131.031 };
-  const { Map } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
-  // const { SearchBox } = await google.maps.importLibrary("places");
-  //マップ読み込み
-  map = new Map(document.getElementById("map"), {
-    zoom: 15,
-    center: position,
-    mapId: "DEMO_MAP_ID",
-    mapTypeControl: false,
-    streetViewControl: false,
-    fullscreenControl: false,
-  });
-  infoWindow = new google.maps.InfoWindow();
-  //ボタン追加
-  const locationButton = document.getElementById("current-btn");
-  const searchButton = document.getElementById("search-btn");
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(searchButton);
-  //ロード時現在地へ
-  getCurrentlocation();
-  //クリック時現在地へ
-  locationButton.addEventListener("click", () => {
-    getCurrentlocation();
-  });
+//ラーメン屋情報取得処理
+const findRamenNearby = () => {
+  const bounds = map.getBounds();
+  const request = {
+    bounds: bounds,//画面内を検索
+    type: ['restaurant'], // レストランを検索
+    keyword: 'ramen' // キーワードはラーメン
+  };
 
-  //マーカー設置
-  const marker = new AdvancedMarkerView({
-    map: map,
-    position: position,
-    title: "Uluru",
+  service.nearbySearch(request, (results, status) => {
+    if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+      for (let i = 0; i < results.length; i++) {
+        createMarker(results[i]);
+      }
+    } else {
+      infoWindow.setPosition(map.getCenter());
+      infoWindow.setContent('ラーメン屋が見つかりませんでした');
+      infoWindow.open(map);
+    }
   });
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+//マーカー作成処理
+const createMarker = async place => {
+  const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
+  if (!place.geometry || !place.geometry.location) return;
+
+  const marker = new AdvancedMarkerElement({
+    map,
+    position: place.geometry.location,
+  });
+
+  //ラーメン屋の詳細情報取得処理
+  google.maps.event.addListener(marker, 'click', () => {
+    service.getDetails({ placeId: place.place_id }, (result, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+
+        //写真取得
+        const firstPhoto = result.photos[0];
+        const photoUrl = firstPhoto.getUrl();
+
+        const content = `
+          <div><strong>${result.name}</strong><br>
+          住所: ${result.formatted_address}<br>
+          電話番号: ${result.formatted_phone_number || '情報なし'}<br>
+          営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}<br>
+          <img src="${photoUrl}" alt="店舗の写真" style="width:100px;"><br>
+          </div>
+        `;
+        infoWindow.setContent(content);
+        infoWindow.open(map, marker);
+      } else {
+        //写真無しの場合
+        const contentWithoutPhoto = `<div><strong>${result.name}</strong><br>
+          住所: ${result.formatted_address}<br>
+          電話番号: ${result.formatted_phone_number || '情報なし'}<br>
+          営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}</div>`;
+        infoWindow.setContent(contentWithoutPhoto);
+        infoWindow.open(map, marker);
+      }
+    });
+  });
+}
+
+const handleLocationError = (browserHasGeolocation, infoWindow, pos) => {
   infoWindow.setPosition(pos);
   infoWindow.setContent(
     browserHasGeolocation
@@ -87,11 +147,16 @@ initMap();
         </svg>
       </button>
     </div>
-    <button id="current-btn" class="bg-white transition duration-700 hover:bg-red-400 shadow-md w-10 h-10 rounded-sm m-2.5">
+    <!--クリック時現在地へ遷移-->
+    <button id="current-btn" class="bg-white transition duration-700 hover:bg-red-400 shadow-md w-10 h-10 rounded-sm m-2.5"
+    @click="getCurrentlocation"
+    >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fill-red-500 w-full h-2/3">
         <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
       </svg>
     </button>
+    <!--クリック時ラーメン屋表示-->
+    <button id="ramen-search" class="bg-green-700" @click="findRamenNearby">ラーメン屋検索</button>
   </div>
 </template>
 
