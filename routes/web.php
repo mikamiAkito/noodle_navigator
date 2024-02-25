@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\GoogleMapsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,13 +26,11 @@ use Inertia\Inertia;
 //     ]);
 // });
 
+// Route::get('/google-maps-key', [GoogleMapsController::class, 'getKey']);
+
 Route::get('/', function () {
     return Inertia::render('HomePage');
 });
-
-// Route::get('/modal-pages', function () {
-//     return Inertia::render('ModalPages');
-// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
