@@ -25,11 +25,8 @@ use App\Http\Controllers\GoogleMapsController;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-
-// Route::get('/google-maps-key', [GoogleMapsController::class, 'getKey']);
-
 Route::get('/', function () {
-    return Inertia::render('HomePage');
+    return Inertia::render('HomePage', ['googlemaps' => env('GOOGLE_MAPS_API_KEY')]);
 });
 
 Route::get('/dashboard', function () {
