@@ -1,5 +1,6 @@
 <script setup>
 import { usePage } from '@inertiajs/vue3'
+import { ramenStore } from '@/stores/ramenStore.js'
 
 let map;
 let infoWindow;
@@ -67,6 +68,13 @@ const getCurrentlocation = () => {
 
 //ラーメン屋情報取得処理
 const findRamenNearby = () => {
+  //マーカーをリセット
+  for(let marker of markers){
+    marker.setMap(null);
+  }
+
+  markers = [];
+
   const bounds = map.getBounds();
   const request = {
     bounds: bounds,//画面内を検索
@@ -74,10 +82,30 @@ const findRamenNearby = () => {
     keyword: 'ramen' // キーワードはラーメン
   };
 
-  service.nearbySearch(request, (results, status) => {
+  service.nearbySearch(request, async (results, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-      for (let i = 0; i < results.length; i++) {
-        createMarker(results[i]);
+      // 各検索結果の詳細情報を取得するPromiseの配列を作成
+      const detailsPromises = results.map(results => 
+        new Promise((resolve, reject) => {
+          service.getDetails({placeId: results.place_id}, (detail, status) => {
+            if(status === google.maps.places.PlacesServiceStatus.OK) {
+              resolve(detail);
+            }else{
+              reject('Detail fetch failed');
+            }
+          });
+        })
+      );
+      try{
+        const details = await Promise.all(detailsPromises);
+        ramenStore.ramenShops = details;//グローバルステイとへ保存
+        console.log(ramenStore.ramenShops);
+        details.forEach(detail => createMarker(detail));
+      }catch (error) {
+        console.error(error);
+          infoWindow.setPosition(map.getCenter());
+          infoWindow.setContent('ラーメン屋の詳細情報の取得に失敗しました');
+          infoWindow.open(map);
       }
     } else {
       infoWindow.setPosition(map.getCenter());
@@ -86,6 +114,9 @@ const findRamenNearby = () => {
     }
   });
 }
+
+//マーカー配列
+let markers = [];
 
 //マーカー作成処理
 const createMarker = async place => {
@@ -97,11 +128,12 @@ const createMarker = async place => {
     position: place.geometry.location,
   });
 
+  markers.push(marker);
+
   //ラーメン屋の詳細情報取得処理
   google.maps.event.addListener(marker, 'click', () => {
     service.getDetails({ placeId: place.place_id }, (result, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-
         //写真取得
         const firstPhoto = result.photos[0];
         const photoUrl = firstPhoto.getUrl();
@@ -145,7 +177,7 @@ initMap();
 </script>
 
 <template>
-  <div>
+  <div v-cloak>
     <div id="map" class=""></div>
     <div class="">
       <button id="search-btn" class="bg-white transition duration-700 hover:bg-blue-400 shadow-md w-10 h-10 rounded-sm m-2.5">
@@ -168,6 +200,9 @@ initMap();
 </template>
 
 <style scoped>
+[v-cloak] {
+  display: none;
+}
 #map {
   height: 600px; /* マップの高さを指定 */
   width: 100%; /* マップの幅を指定 */

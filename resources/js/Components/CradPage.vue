@@ -1,19 +1,63 @@
 <script setup>
+import { ramenStore } from '@/stores/ramenStore';
+import StarRating from '@/Components/StarRating.vue';
+import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle';
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  const swiper = new Swiper('.swiper', {
+    // Optional parameters
+    direction: 'horizontal',
+    loop: true,
+
+    // If we need pagination
+    pagination: {
+      el: '.swiper-pagination',
+    },
+
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+
+    // And if we need scrollbar
+    scrollbar: {
+      el: '.swiper-scrollbar',
+    },
+  });
+})
 </script>
 
 <template>
-    <div class="max-w-sm w-full lg:max-w-full lg:flex">
-      <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('../img/a1.JPG')" title="Woman holding a mug">
+  <div>
+
+    <div class="swiper w-full h-80">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">Slide 1</div>
+        <div class="swiper-slide">Slide 2</div>
+        <div class="swiper-slide">Slide 3</div>
+        ...
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+
+    <div class="max-w-sm w-full lg:max-w-full lg:flex place-content-center"
+    v-for="shop in ramenStore.ramenShops" :key="shop.place_id"
+    >
+      <div v-if="shop.photos && shop.photos.length > 0" class="swiper-slide h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" title="店舗の写真">
+        <img v-for="(photo, index) in shop.photos" :key="index" :src="photo.getUrl({maxWidth: 100})" alt="店舗の写真">
       </div>
       <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
         <div class="mb-8">
-          <p class="text-sm text-gray-600 flex items-center">
-            <svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
-            </svg>
-            Members only
-          </p>
-          <div class="text-gray-900 font-bold text-xl mb-2">Can coffee make you a better developer?</div>
+          <div>{{ shop.vicinity }}</div>
+          <div>{{ shop.formatted_phone_number }}</div>
+          <StarRating :rating="shop.rating" />
+          <div class="text-gray-900 font-bold text-xl mb-2">{{ shop.name }}</div>
           <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
         </div>
         <div class="flex items-center">
@@ -25,4 +69,8 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
+
+<style scoped>
+</style>

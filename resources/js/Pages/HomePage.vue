@@ -27,7 +27,7 @@ onMounted(() => {
   <div>
     <HeaderPage></HeaderPage>
     <GoogleMap></GoogleMap>
-    <CradPage v-for="index in 6" :key="index"></CradPage>
+    <CradPage></CradPage>
     <div id="top_button" class="fixed -bottom-14 right-3 duration-700 opacity-0 hover:animate-pulse animate-duration-1000"
     :class="{
       'opacity-100':topButtonOpacity, 
