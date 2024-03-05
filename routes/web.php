@@ -17,7 +17,7 @@ use App\Http\Controllers\GoogleMapsController;
 |
 */
 
-// Route::get('/', function () {
+// Route::get('/', function () {//テスト用ルート
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),
 //         'canRegister' => Route::has('register'),
@@ -25,6 +25,7 @@ use App\Http\Controllers\GoogleMapsController;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+
 Route::get('/', function () {
     return Inertia::render('HomePage', ['googlemaps' => env('GOOGLE_MAPS_API_KEY')]);
 });

@@ -98,7 +98,7 @@ const findRamenNearby = () => {
       );
       try{
         const details = await Promise.all(detailsPromises);
-        ramenStore.ramenShops = details;//グローバルステイとへ保存
+        ramenStore.ramenShops = details;//グローバルステイトへ保存
         console.log(ramenStore.ramenShops);
         details.forEach(detail => createMarker(detail));
       }catch (error) {
