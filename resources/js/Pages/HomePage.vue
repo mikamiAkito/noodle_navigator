@@ -28,7 +28,8 @@ onMounted(() => {
     <HeaderPage></HeaderPage>
     <GoogleMap></GoogleMap>
     <CradPage></CradPage>
-    <div id="top_button" class="fixed -bottom-14 right-3 duration-700 opacity-0 hover:animate-pulse animate-duration-1000"
+    <!-- トップ遷移ボタン -->
+    <div id="top_button" class="fixed -bottom-14 right-3 duration-700 opacity-0 hover:animate-pulse animate-duration-1000 z-10"
     :class="{
       'opacity-100':topButtonOpacity, 
       '-translate-y-16':topButtonOpacity

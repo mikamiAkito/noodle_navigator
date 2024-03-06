@@ -38,6 +38,9 @@ module.exports = {
             height: {
                 '13': '3.2rem',
                 '18': '4.5rem'
+            },
+            zIndex: {
+                '25': '25'
             }
         },
     },

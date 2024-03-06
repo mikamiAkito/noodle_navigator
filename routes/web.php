@@ -26,6 +26,7 @@ use App\Http\Controllers\GoogleMapsController;
 //     ]);
 // });
 
+//ホームページルート
 Route::get('/', function () {
     return Inertia::render('HomePage', ['googlemaps' => env('GOOGLE_MAPS_API_KEY')]);
 });

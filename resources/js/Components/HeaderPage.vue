@@ -30,7 +30,7 @@ const Hambarg = ref(false);
         </li>
       </ul>
     </div>
-    <div class="circle-bg scale-150 bg-orange-400 fixed size-20 md:size-24 rounded-full z-20 -right-12 -top-12 duration-700"
+    <div class="circle-bg scale-150 bg-orange-400 fixed size-20 md:size-24 rounded-full z-25 -right-12 -top-12 duration-700"
     :class="{'scale-450':Hambarg}"></div>
     <div id="z-black" @click="Hambarg = !Hambarg" class="fixed w-full invisible duration-700" 
     :class="{'bgaction':Hambarg}"></div>
@@ -43,7 +43,7 @@ const Hambarg = ref(false);
   height: 100%;
   visibility: visible;
   background: rgba(0,0,0,0.4);
-  z-index: 10;
+  z-index: 20;
 }
 
 /*ボタンCSS*/
