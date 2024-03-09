@@ -2,6 +2,7 @@
 import GoogleMap from '@/Components/GoogleMap.vue';
 import HeaderPage from '@/Components/HeaderPage.vue';
 import CradPage from '@/Components/CradPage.vue';
+import FooterPage from '@/Components/FooterPage.vue';
 import { onMounted, ref } from 'vue';
 
 const topButtonOpacity = ref(false);
@@ -25,9 +26,9 @@ onMounted(() => {
 
 <template>
   <div>
-    <HeaderPage></HeaderPage>
-    <GoogleMap></GoogleMap>
-    <CradPage></CradPage>
+    <HeaderPage/>
+    <GoogleMap/>
+    <CradPage/>
     <!-- トップ遷移ボタン -->
     <div id="top_button" class="fixed -bottom-14 right-3 duration-700 opacity-0 hover:animate-pulse animate-duration-1000 z-10"
     :class="{
@@ -39,6 +40,7 @@ onMounted(() => {
         <path stroke-linecap="round" stroke-linejoin="round" d="m15 11.25-3-3m0 0-3 3m3-3v7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
       </svg>
     </div>
+    <FooterPage/>
   </div>
 </template>
 

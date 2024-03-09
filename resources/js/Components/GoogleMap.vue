@@ -121,39 +121,98 @@ let markers = [];
 //マーカー作成処理
 const createMarker = async place => {
   const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
+  //カスタムマーカー
+  const parser = new DOMParser();
+  const pinSvgString =
+  `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" class="fill-red-500 w-8 h-2/3"><path class="st0" d="M316.766,60.625c0-7.953-6.453-14.406-14.406-14.406c-7.969,0-14.406,6.453-14.406,14.406v7.109h-24.188v-7.109c0-7.953-6.453-14.406-14.391-14.406c-7.969,0-14.422,6.453-14.422,14.406v7.109h-24.172v-7.109c0-7.953-6.438-14.406-14.406-14.406c-7.953,0-14.406,6.453-14.406,14.406v7.109h-44.484v30.797l44.484,1.125v116H2.828v16.469c-0.016,62.688,24.391,121.594,68.719,165.891c22.828,22.828,49.547,40.406,79.453,52.266V512h172.859v-61.719c29.922-11.859,56.641-29.438,79.453-52.266c44.328-44.297,68.719-103.203,68.719-165.891v-16.469H316.766V103.125l192.406,4.938V67.734H316.766V60.625z M210.781,100.406l24.172,0.625v114.625h-24.172V100.406z M295.047,483.188H179.813v-27.844c18.422,4.75,37.719,7.281,57.625,7.266c19.875,0.016,39.188-2.516,57.609-7.266V483.188z M382.953,377.641c-37.297,37.266-88.656,60.266-145.516,60.266c-56.875,0-108.25-23-145.531-60.266c-34.531-34.563-56.813-81.234-59.891-133.172h410.828C439.781,296.406,417.5,343.078,382.953,377.641z M287.953,215.656h-24.188V101.766l24.188,0.625V215.656z"></path></svg>`;
+  const pinSvgElement = parser.parseFromString(
+    pinSvgString,
+    "image/svg+xml"
+  ).documentElement;
+
   if (!place.geometry || !place.geometry.location) return;
 
   const marker = new AdvancedMarkerElement({
     map,
     position: place.geometry.location,
+    content: pinSvgElement,
   });
 
   markers.push(marker);
-
-  //ラーメン屋の詳細情報取得処理
-  google.maps.event.addListener(marker, 'click', () => {
+  //マーカーホバーで情報ウィンドウ表示
+  pinSvgElement.addEventListener('mouseover', () => {
     service.getDetails({ placeId: place.place_id }, (result, status) => {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-        //写真取得
         const firstPhoto = result.photos[0];
         const photoUrl = firstPhoto.getUrl();
-
         const content = `
           <div><strong>${result.name}</strong><br>
-          住所: ${result.formatted_address}<br>
-          電話番号: ${result.formatted_phone_number || '情報なし'}<br>
-          営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}<br>
-          <img src="${photoUrl}" alt="店舗の写真" style="width:100px;"><br>
+            住所: ${result.formatted_address}<br>
+            電話番号: ${result.formatted_phone_number || '情報なし'}<br>
+            営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}<br>
+            <img src="${photoUrl}" alt="店舗の写真" style="width:100px;"><br>
           </div>
         `;
         infoWindow.setContent(content);
         infoWindow.open(map, marker);
       } else {
         //写真無しの場合
-        const contentWithoutPhoto = `<div><strong>${result.name}</strong><br>
+        const contentWithoutPhoto = `
+        <div><strong>${result.name}</strong><br>
           住所: ${result.formatted_address}<br>
           電話番号: ${result.formatted_phone_number || '情報なし'}<br>
-          営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}</div>`;
+          営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}
+        </div>`;
+        infoWindow.setContent(contentWithoutPhoto);
+        infoWindow.open(map, marker);
+      }
+    });
+  });
+
+  // ラーメン屋の詳細情報取得処理
+  google.maps.event.addListener(marker, 'click', () => {
+    // console.log(markers)
+    // // クリックされたマーカー以外を削除
+    // markers.forEach(m => {
+    //   if (m !== marker) {
+    //     m.setMap(null);
+    //   }
+    // });
+    // markers = [marker];
+    service.getDetails({ placeId: place.place_id }, (result, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        //クリック時カードに遷移
+        const shopElement = document.getElementById(`shop-${result.place_id}`)
+        if(shopElement){
+          shopElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        //カード強調表示
+        shopElement.style.backgroundColor = '#ffcc00';
+        shopElement.style.transition = 'background-color 0.5s ease';
+        setTimeout(() => {
+          shopElement.style.backgroundColor = ''; 
+        }, 1000);
+        //写真取得
+        const firstPhoto = result.photos[0];
+        const photoUrl = firstPhoto.getUrl();
+        const content = `
+          <div><strong>${result.name}</strong><br>
+            住所: ${result.formatted_address}<br>
+            電話番号: ${result.formatted_phone_number || '情報なし'}<br>
+            営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}<br>
+            <img src="${photoUrl}" alt="店舗の写真" style="width:100px;"><br>
+          </div>
+        `;
+        infoWindow.setContent(content);
+        infoWindow.open(map, marker);
+      } else {
+        //写真無しの場合
+        const contentWithoutPhoto = `
+        <div><strong>${result.name}</strong><br>
+          住所: ${result.formatted_address}<br>
+          電話番号: ${result.formatted_phone_number || '情報なし'}<br>
+          営業時間: ${result.opening_hours ? result.opening_hours.weekday_text.join('<br>') : '情報なし'}
+        </div>`;
         infoWindow.setContent(contentWithoutPhoto);
         infoWindow.open(map, marker);
       }
