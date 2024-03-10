@@ -27,7 +27,7 @@ use App\Http\Controllers\GoogleMapsController;
 // });
 
 //ホームページルート
-Route::get('/', function () {
+Route::get('/noodle-nav', function () {
     return Inertia::render('HomePage', ['googlemaps' => env('GOOGLE_MAPS_API_KEY')]);
 });
 

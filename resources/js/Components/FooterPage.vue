@@ -34,7 +34,7 @@
     <div class="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col max-w-screen-lg items-center">
       <div class="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
         <a href="/#" class="w-6 mx-1">
-            <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
+            <svg class="fill-current cursor-pointer text-gray-500 hover:text-orange-500" width="100%" height="100%"
                 viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
                 style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
@@ -55,7 +55,7 @@
             </svg>
         </a>
         <a href="/#" class="w-6 mx-1">
-            <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
+            <svg class="fill-current cursor-pointer text-gray-500 hover:text-orange-500" width="100%" height="100%"
                 viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
                 style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
@@ -67,7 +67,7 @@
             </svg>
         </a>
         <a href="/#" class="w-6 mx-1">
-            <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
+            <svg class="fill-current cursor-pointer text-gray-500 hover:text-orange-500" width="100%" height="100%"
                 viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
                 style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
@@ -91,7 +91,7 @@
             </svg>
         </a>
         <a href="/#" class="w-6 mx-1">
-            <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
+            <svg class="fill-current cursor-pointer text-gray-500 hover:text-orange-500" width="100%" height="100%"
                 viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
                 style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
@@ -112,7 +112,7 @@
             </svg>
         </a>
         <a href="/#" class="w-6 mx-1">
-            <svg class="fill-current cursor-pointer text-gray-500 hover:text-indigo-600" width="100%" height="100%"
+            <svg class="fill-current cursor-pointer text-gray-500 hover:text-orange-500" width="100%" height="100%"
                 viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
                 style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
@@ -125,7 +125,7 @@
             </svg>
         </a>
       </div>
-      <div class="my-5">© Copyright 2020. All Rights Reserved.</div>
+      <div class="my-5">© Copyright 2024. All Rights Reserved.</div>
     </div>
   </div>
 </div>

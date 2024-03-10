@@ -1,13 +1,22 @@
 <script setup>
 import { ref } from "vue";
+import { watch } from 'vue';
 
 const Hambarg = ref(false);
 
+//ハンバーガーメニュー起動時スクロール無効化
+watch(Hambarg, (newValue) => {
+  if (newValue) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
 </script>
 
 <template>
   <div>
-    <div class="bg-orange-600 absolute h-13 md:h-18 z-10 w-full grid justify-center content-center">
+    <div class="bg-orange-600 absolute h-13 md:h-18 z-10 w-full grid justify-center">
       <img class="size-16 hover:animate-shake" src="../img/ramen.png" alt="">
     </div>
     <div class="openbtn fixed top-0.5 right-0 md:right-2 z-50 cursor-pointer w-10 md:w-12 h-12" 
