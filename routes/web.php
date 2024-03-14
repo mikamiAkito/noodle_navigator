@@ -17,19 +17,18 @@ use App\Http\Controllers\GoogleMapsController;
 |
 */
 
-// Route::get('/', function () {//テスト用ルート
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
+Route::get('/noodle-nav', function () {//テスト用ルート
+    return Inertia::render('HomePage', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'googlemaps' => env('GOOGLE_MAPS_API_KEY'),
+    ]);
+});
 
 //ホームページルート
-Route::get('/noodle-nav', function () {
-    return Inertia::render('HomePage', ['googlemaps' => env('GOOGLE_MAPS_API_KEY')]);
-});
+// Route::get('/noodle-nav', function () {
+//     return Inertia::render('HomePage', ['googlemaps' => env('GOOGLE_MAPS_API_KEY')]);
+// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

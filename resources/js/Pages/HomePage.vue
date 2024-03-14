@@ -3,7 +3,12 @@ import GoogleMap from '@/Components/GoogleMap.vue';
 import HeaderPage from '@/Components/HeaderPage.vue';
 import CradPage from '@/Components/CradPage.vue';
 import FooterPage from '@/Components/FooterPage.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+
+const props = defineProps({
+  canLogin: Boolean,
+  canRegister: Boolean,
+});
 
 const topButtonOpacity = ref(false);
 
@@ -26,7 +31,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <HeaderPage/>
+    <HeaderPage :in-login="canLogin" :in-register="canRegister"/>
     <GoogleMap/>
     <CradPage/>
     <!-- トップ遷移ボタン -->

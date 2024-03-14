@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/dashboard';
+    public const REGISTER = '/noodle-nav';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
