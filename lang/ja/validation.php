@@ -156,6 +156,8 @@ return [
     'attributes' => [
         'password' => 'パスワード',
         'email' => 'メールアドレス',
+        'profile_photo' => 'プロフィール画像',
+        'cover_photo' => 'バナー画像',
     ],
 
 ];

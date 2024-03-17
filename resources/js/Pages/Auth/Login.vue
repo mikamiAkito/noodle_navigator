@@ -1,10 +1,7 @@
 <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import SnsIcon from '@/Components/SnsIcon.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import HeaderPage from '@/Components/HeaderPage.vue';
 import FooterPage from '@/Components/FooterPage.vue';
@@ -28,72 +25,9 @@ const submit = () => {
 </script>
 
 <template>
-    <!-- <GuestLayout>
-        <Head title="Log in" />
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout> -->
-
-
 <div>
-<HeaderPage/>
-
+    <Head title="Login" />
+    <HeaderPage/>
     <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -176,35 +110,11 @@ const submit = () => {
                             </span>
                         </div>
                     </div>
-
-                    <div class="mt-6 grid grid-cols-3 gap-3">
-                        <div>
-                            <a href="#"
-                                class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                                <img class="h-5 w-5" src="https://www.svgrepo.com/show/512120/facebook-176.svg"
-                                    alt="">
-                            </a>
-                        </div>
-                        <div>
-                            <a href="#"
-                                class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                                <img class="h-5 w-5" src="https://www.svgrepo.com/show/513008/twitter-154.svg"
-                                    alt="">
-                            </a>
-                        </div>
-                        <div>
-                            <a href="#"
-                                class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                                <img class="h-6 w-6" src="https://www.svgrepo.com/show/506498/google.svg"
-                                    alt="">
-                            </a>
-                        </div>
-                    </div>
+                    <SnsIcon/>
                 </div>
             </div>
         </div>
     </div>
-
 <FooterPage/>
 </div>
 </template>

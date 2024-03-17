@@ -42,7 +42,14 @@ module.exports = {
             zIndex: {
                 '25': '25',
                 '60': '60',
-            }
+            },
+            screens: {
+                xs: '240px',
+                sm: '480px',
+                md: '768px',
+                lg: '976px',
+                xl: '1440px',
+            },
         },
     },
 

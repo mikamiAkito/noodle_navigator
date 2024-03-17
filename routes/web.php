@@ -31,7 +31,11 @@ Route::get('/noodle-nav', function () {//テスト用ルート
 // });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('HomePage', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'googlemaps' => env('GOOGLE_MAPS_API_KEY'),
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
