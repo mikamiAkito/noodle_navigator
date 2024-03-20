@@ -10,6 +10,8 @@ import { Head } from '@inertiajs/vue3';
 defineProps({
     mustVerifyEmail: Boolean,
     status: String,
+    profilePhotoUrl: String,
+    coverPhotoUrl: String,
 });
 </script>
 
@@ -17,14 +19,14 @@ defineProps({
     <div>
         <Head title="Profile" />
         <HeaderPage/>
-        <section class="w-full overflow-hidden dark:bg-gray-900">
+        <section class="w-full overflow-hidden dark:bg-gray-800">
             <div class="flex flex-col">
                 <!-- Cover Image -->
-                <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxM3x8Y292ZXJ8ZW58MHwwfHx8MTcxMDU2OTcxM3ww&ixlib=rb-4.0.3&q=80&w=1080" alt="User Cover"
+                <img :src="coverPhotoUrl" alt="User Cover"
                         class="w-full xl:h-[20rem] lg:h-[18rem] md:h-[16rem] sm:h-[14rem] xs:h-[11rem]" />
                 <!-- Profile Image -->
                 <div class="sm:w-[80%] xs:w-[90%] mx-auto flex">
-                    <img src="https://media.licdn.com/dms/image/C4E35AQHzFh4OzuHCVA/profile-framedphoto-shrink_200_200/0/1618420506345?e=1711180800&amp;v=beta&amp;t=bKkUpE3XmQTZxb9ivRCoCyv29rqNC1TWqgsktZ4fNLw" alt="User Profile"
+                    <img :src="profilePhotoUrl" alt="User Profile"
                             class="rounded-md lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
                     <!-- FullName -->
                     <h1 class="w-full text-left my-4 sm:mx-4 xs:pl-4 text-gray-800 dark:text-white lg:text-4xl md:text-3xl sm:text-3xl xs:text-xl font-serif">
@@ -54,7 +56,7 @@ defineProps({
                             <div class="w-full">
                                 <dl class="text-gray-900">
                                     <div class="flex flex-col pt-3">
-                                        <div class="p-4 sm:p-8 bg-white">
+                                        <div class="p-4 sm:p-8 bg-white dark:bg-gray-800">
                                         </div>
                                         <div class="flex flex-col py-3">
                                             <LogoutForm/>

@@ -1,4 +1,5 @@
 <script setup>
+import DarkMode from '@/Button/DarkMode.vue';
 import { onMounted, ref } from "vue";
 import { watch } from 'vue';
 import { Link } from '@inertiajs/vue3';
@@ -7,7 +8,6 @@ const props = defineProps({
   inLogin: Boolean,
   inRegister: Boolean,
 });
-console.log(props);
 
 const Hambarg = ref(false);
 
@@ -28,8 +28,15 @@ watch(Hambarg, (newValue) => {
 
 <template>
   <div>
-    <div class="bg-orange-600 absolute h-13 md:h-18 z-10 w-full grid justify-center content-center">
-      <img class="size-16" src="../img/ramen.png" alt="">
+    <div class="bg-orange-600 absolute h-13 md:h-18 z-10 w-full grid grid-cols-3">
+      <div class="grid justify-start items-center">
+        <DarkMode/>
+      </div>
+      <div class="grid justify-center items-center">
+        <Link class="" :href="route('noodlenav')">
+          <img class="size-10" src="../img/ramen.png" alt="">
+        </Link>
+      </div>
     </div>
     <div v-if="inLogin">
       <div class="openbtn fixed top-0.5 right-0 md:right-2 z-50 cursor-pointer w-10 md:w-12 h-12" 
@@ -48,9 +55,6 @@ watch(Hambarg, (newValue) => {
             <li class="cursor-pointer text-white hover:text-slate-300 duration-500 pb-2 font-black text-lg animate-gnaviAnime animate-duration-1000 animate-delay-200 animate-fill-forwards opacity-0">
               <Link class="block w-24 text-base md:text-xl" :href="a">お気に入り</Link>
             </li>
-            <li class="cursor-pointer text-white hover:text-slate-300 duration-500 pb-2 font-black text-lg animate-gnaviAnime animate-duration-1000 animate-delay-200 animate-fill-forwards opacity-0">
-              <Link class="block w-24 text-base md:text-xl" :href="a">投稿一覧</Link>
-            </li>
           </div>
           <li v-else class="cursor-pointer text-white hover:text-slate-300 duration-500 pb-2 font-black text-lg animate-gnaviAnime animate-duration-1000 animate-delay-200 animate-fill-forwards opacity-0">
             <Link class="block w-24 text-base md:text-xl" :href="route('login')">ログイン</Link>
@@ -65,7 +69,7 @@ watch(Hambarg, (newValue) => {
   </div>
 </template>
 
-<style scoped>
+<style>
 /* メニュー背景 */
 #z-black.bgaction{
   height: 100%;

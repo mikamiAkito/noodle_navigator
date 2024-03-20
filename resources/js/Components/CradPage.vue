@@ -31,10 +31,10 @@ watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
 <template>
   <div>
 
-    <div class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16">
+    <div class="w-full mx-auto p-5 sm:p-10 md:p-16 dark:bg-gray-600">
       <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
         <div v-for="shop in ramenStore.ramenShops" :key="shop.place_id" :id="`shop-${shop.place_id}`">
-          <div class="rounded overflow-hidden shadow-lg">
+          <div class="rounded overflow-hidden shadow-lg border border-blue-400 dark:border-slate-700">
             <a href="#"></a>
             <div class="relative">
               <!-- スライドショー -->
@@ -62,10 +62,10 @@ watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
             <!-- 店名・住所 -->
             <div class="px-6 py-4">
               <a href="#"
-              class="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">
+              class="font-semibold text-lg inline-block hover:text-indigo-600 dark:text-white transition duration-500 ease-in-out">
                 {{ shop.name }}
               </a>
-              <p class="text-gray-500 text-sm">
+              <p class="text-gray-500 dark:text-white opacity-70 text-sm">
                 {{ shop.formatted_address }}
               </p>
             </div>

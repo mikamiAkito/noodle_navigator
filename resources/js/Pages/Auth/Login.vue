@@ -28,12 +28,12 @@ const submit = () => {
 <div>
     <Head title="Login" />
     <HeaderPage/>
-    <div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-800 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
                 アカウントにサインイン
             </h2>
-            <p class="mt-2 text-center text-sm text-gray-600 max-w">
+            <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400 max-w">
                 または
                 <Link
                 :href="route('register')"
@@ -45,27 +45,27 @@ const submit = () => {
         </div>
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-            <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div class="bg-white dark:bg-gray-600 py-8 px-4 shadow sm:rounded-lg sm:px-10">
                 <form @submit.prevent="submit" class="space-y-6">
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-white">
                             メールアドレス
                         </label>
                         <div class="mt-1">
                             <input id="email" name="email" type="email" autocomplete="email" required v-model="form.email"
-                                class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                class="appearance-none rounded-md relative block w-full px-3 py-2 dark:bg-slate-800 border border-gray-300 dark:border-gray-500 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                 placeholder="Enter your email address">
                             <InputError class="mt-2" :message="form.errors.email" />
                         </div>
                     </div>
 
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-white">
                             パスワード
                         </label>
                         <div class="mt-1">
                             <input id="password" name="password" type="password" autocomplete="current-password" required v-model="form.password"
-                                class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                class="appearance-none rounded-md relative block w-full px-3 py-2 dark:bg-slate-800 border border-gray-300 dark:border-gray-500 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                 placeholder="Enter your password">
                             <InputError class="mt-2" :message="form.errors.password" />
                         </div>
@@ -73,7 +73,7 @@ const submit = () => {
 
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+                            <label for="remember_me" class="ml-2 block text-sm text-gray-900 dark:text-white">
                                 <Checkbox name="remember" :checked="form.remember" />
                                 保存
                             </label>
@@ -105,7 +105,7 @@ const submit = () => {
                             <div class="w-full border-t border-gray-300"></div>
                         </div>
                         <div class="relative flex justify-center text-sm">
-                            <span class="px-2 bg-gray-100 text-gray-500">
+                            <span class="px-2 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-white">
                                 またはこちらから
                             </span>
                         </div>

@@ -130,10 +130,7 @@ const createMarker = async place => {
     content: pinSvgElement,
   });
   markers.push(marker);
-  //マーカーホバーで情報ウィンドウ表示
-  pinSvgElement.addEventListener('mouseover', () => {
 
-  });
   //マーカークリック時カード遷移
   google.maps.event.addListener(marker, 'click', () => {
     handleMarkerClick(place);
@@ -151,15 +148,22 @@ const handleMarkerClick = place => {
   // console.log(place)
   if (place) {
     //クリック時カードに遷移
-    const shopElement = document.getElementById(`shop-${place.place_id}`)
+    const shopElement = document.getElementById(`shop-${place.place_id}`);
     if(shopElement){
       shopElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    shopElement.style.zIndex = '1000';
     //カード強調表示
-    shopElement.style.backgroundColor = '#ffcc00';
+    if(document.documentElement.classList.contains('dark')){
+      shopElement.style.backgroundColor = '#1d4ed8';
+    }else{
+    //ダークモードへ変更
+      shopElement.style.backgroundColor = '#ffcc00';
+    }
     shopElement.style.transition = 'background-color 0.5s ease';
     setTimeout(() => {
       shopElement.style.backgroundColor = ''; 
+      shopElement.style.zIndex = '';
     }, 1000);
   }else{
     infoWindow.setContent('店舗情報が取得出来ませんでした。');
@@ -204,10 +208,10 @@ watch(station, (newValue) => {
     </button>
     <div class="flex justify-center">
       <div id="modal" 
-      class="fixed -translate-y-14 top-20 duration-700 z-60 opacity-0 rounded-lg bg-white px-5 pt-6 pb-5 sm:max-w-md sm:w-full sm:p-6 flex justify-between" 
+      class="fixed -translate-y-40 top-0 duration-700 z-60 opacity-0 rounded-lg bg-white px-5 pt-6 pb-5 sm:max-w-md sm:w-full sm:p-6 flex justify-between" 
       :class="{
       'opacity-100':station,
-      'translate-y-11':station,
+      'translate-y-40':station,
       }">
         <input id="pac-input" class="controls w-2/3" type="text" placeholder="Search Box"/>
         <button>検索</button>

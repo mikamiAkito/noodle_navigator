@@ -58,4 +58,6 @@ module.exports = {
         require('flowbite/plugin'),
         require('tailwindcss-animated')
     ],
+
+    darkMode: 'selector',
 };

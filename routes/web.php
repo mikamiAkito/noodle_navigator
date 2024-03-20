@@ -23,7 +23,7 @@ Route::get('/noodle-nav', function () {//テスト用ルート
         'canRegister' => Route::has('register'),
         'googlemaps' => env('GOOGLE_MAPS_API_KEY'),
     ]);
-});
+})->name('noodlenav');
 
 //ホームページルート
 // Route::get('/noodle-nav', function () {

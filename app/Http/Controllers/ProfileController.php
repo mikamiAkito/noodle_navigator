@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,9 +19,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = Auth::user();
+        $profilePhotoUrl = $user->profile_photo ? Storage::url($user->profile_photo) : "";
+        $coverPhotoUrl = $user->cover_photo ? Storage::url($user->cover_photo) : "";
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'profilePhotoUrl' => $profilePhotoUrl,
+            'coverPhotoUrl' => $coverPhotoUrl,
         ]);
     }
 
