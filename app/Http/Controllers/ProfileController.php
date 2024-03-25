@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\ImageUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profilePhotoUrl = $user->profile_photo ? Storage::url($user->profile_photo) : "";
         $coverPhotoUrl = $user->cover_photo ? Storage::url($user->cover_photo) : "";
-
+// dd($profilePhotoUrl);
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
@@ -47,11 +48,6 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
-    public function image(Request $request): RedirectResponse
-    {
-        dd($request);
-    }
-
     /**
      * Delete the user's account.
      */
@@ -72,4 +68,42 @@ class ProfileController extends Controller
 
         return Redirect::to('/noodle-nav');
     }
+
+    //プロフィール画像アップデート処理
+    public function image(ImageUpdateRequest $request): RedirectResponse
+    {
+        // dd($request);
+        $user = $request->user();
+
+        // プロフィール画像のアップデート
+        if ($request->hasFile('profile_photo')) {
+            // dd($request);
+            // 古い画像を削除
+            if ($user->profile_photo) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+            
+            // 新しい画像をアップロードして保存
+            $profilePhotoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+            $user->profile_photo = $profilePhotoPath;
+        }
+
+        // 背景画像のアップデート
+        if ($request->hasFile('cover_photo')) {
+            // dd($request);
+            // 古い画像を削除
+            if ($user->cover_photo) {
+                Storage::disk('public')->delete($user->cover_photo);
+            }
+
+            // 新しい画像をアップロードして保存
+            $coverPhotoPath = $request->file('cover_photo')->store('cover_photos', 'public');
+            $user->cover_photo = $coverPhotoPath;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile.edit');
+    }
+
 }
