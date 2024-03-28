@@ -8,8 +8,8 @@ const props = defineProps({
 });
 
 //デフォルト画像
-const defaultCoverUrl = '';
-const defaultProfileUrl = '';
+const defaultCoverUrl = '/img/background137.jpg';
+const defaultProfileUrl = '/img/original.jpg';
 
 onMounted(() => {
   const coverimage = document.getElementById("coverImage");
@@ -63,7 +63,7 @@ const form = useForm({
   <div>
     <!-- 背景画像 -->
     <div class="flex relative">
-      <img :src="props.coverPhotoUrl ? props.coverPhotoUrl : defaultCoverUrl" alt="User Cover" class="w-full xl:h-[20rem] lg:h-[18rem] md:h-[16rem] sm:h-[14rem] xs:h-[11rem]" />
+      <img :src="props.coverPhotoUrl === '' ? defaultCoverUrl : props.coverPhotoUrl" alt="User Cover" class=" w-full xl:h-[20rem] lg:h-[18rem] md:h-[16rem] sm:h-[14rem] xs:h-[11rem]" />
       <button class="absolute bottom-2 w-full text-2xl duration-300 cursor-pointer opacity-30 hover:opacity-100 flex justify-center z-60" id="coverbutton" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -77,7 +77,7 @@ const form = useForm({
     <InputError class="mt-2" :message="form.errors.cover_photo" />
     <!-- プロフィール画像 -->
     <div class="sm:w-[80%] xs:w-[90%] mx-auto flex relative">
-      <img :src="props.profilePhotoUrl ? props.profilePhotoUrl : defaultProfileUrl" alt="User Profile" class="rounded-md lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
+      <img :src="props.profilePhotoUrl === '' ? defaultProfileUrl : props.profilePhotoUrl" alt="User Profile" class="rounded-md lg:w-[12rem] lg:h-[12rem] md:w-[10rem] md:h-[10rem] sm:w-[8rem] sm:h-[8rem] xs:w-[7rem] xs:h-[7rem] outline outline-2 outline-offset-2 outline-blue-500 relative lg:bottom-[5rem] sm:bottom-[4rem] xs:bottom-[3rem]" />
       <button class="absolute top-6 w-28 sm:w-32 md:top-14 md:w-40 lg:top-[4.5rem] lg:w-48 duration-300 cursor-pointer opacity-30 hover:opacity-100 flex justify-center" id="profilebutton" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
