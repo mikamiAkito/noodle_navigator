@@ -1,20 +1,22 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
+import { useDarkModeStore } from '@/stores/isDarkMode';
 
-const isDarkMode = ref(false);
+const Mode = useDarkModeStore();
+// const isDarkMode = ref(false);
 
 //スタイル変更処理
 const toggleDarkMode = () => {
     //ライトモードへ変更
-    if(isDarkMode.value){
+    if(Mode.isDarkMode){
         document.documentElement.classList.remove('dark');
         localStorage.theme = 'light';
-        isDarkMode.value = !isDarkMode.value;
+        Mode.isDarkMode = !Mode.isDarkMode;
     }else{
     //ダークモードへ変更
         document.documentElement.classList.add('dark');
         localStorage.theme = 'dark';
-        isDarkMode.value = !isDarkMode.value;
+        Mode.isDarkMode = !Mode.isDarkMode;
     }
 }
 
@@ -23,10 +25,10 @@ onMounted(() => {
     const saveTheme = localStorage.theme;
     if(saveTheme === 'dark'){
         document.documentElement.classList.add('dark');
-        isDarkMode.value = true;
+        Mode.isDarkMode = true;
     }else{
         document.documentElement.classList.remove('dark');
-        isDarkMode.value = false;
+        Mode.isDarkMode = false;
     }
 });
 </script>
@@ -40,9 +42,9 @@ onMounted(() => {
             <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
             <div class="absolute left-1 top-1 w-6 h-6 rounded-full transition"
             :class="{
-                'bg-white':!isDarkMode,
-                'translate-x-full':isDarkMode,
-                'bg-indigo-500':isDarkMode
+                'bg-white':!Mode.isDarkMode,
+                'translate-x-full':Mode.isDarkMode,
+                'bg-indigo-500':Mode.isDarkMode
             }"
             ></div>
             </div>
