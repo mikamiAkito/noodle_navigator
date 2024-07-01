@@ -3,7 +3,10 @@ import { ramenStore } from '@/stores/ramenStore';
 import StarRating from '@/Components/StarRating.vue';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
-import { nextTick, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
+import axios from 'axios';
+
+const BookmarkFlg = ref({});
 
 //ラーメン屋検索処理後にSwiper実施
 watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
@@ -26,6 +29,33 @@ watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
     });
   }
 }, { immediate: true, deep: true });
+
+//お気に入り登録
+const saveAsBookmark = async shop => {
+  console.log("データフォーム", shop);
+  BookmarkFlg.value[shop.place_id] = !BookmarkFlg.value[shop.place_id];
+  if(BookmarkFlg.value[shop.place_id]) {
+    await axios.post("/bookMark", {
+      params: shop,
+    })
+    .then((response) => {
+      console.log("送信完了", response);
+    })
+    .catch((error) => {
+      alert("送信エラー", error);
+    })
+  } else {
+    await axios.post("/bookMark-delete", {
+      params: shop,
+    })
+    .then((response) => {
+      console.log("解除完了", response);
+    })
+    .catch((error) => {
+      alert("送信エラー", error);
+    })
+  }
+};
 </script>
 
 <template>
@@ -50,14 +80,22 @@ watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
                 <div class="swiper-button-next"></div>
               </div>
               <!-- お気に入り登録 -->
-              <a href="!#">
-                <div
-                  class="text-sm absolute top-0 right-0 bg-indigo-600 px-4 text-white rounded-full h-16 w-16 z-10
-                  flex flex-col items-center justify-center mt-3 mr-3 hover:bg-white hover:text-indigo-600 transition duration-500 ease-in-out">
-                  <span class="font-bold">27</span>
-                  <small>March</small>
+              <div v-show="$page.props.auth.user">
+                <div @click="saveAsBookmark(shop)">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" 
+                  class="size-6 text-sm absolute top-0 right-0 px-4 h-16 w-16 z-10 text-indigo-600
+                  flex flex-col items-center justify-center mt-3 mr-3 transition duration-500 
+                  ease-in-out cursor-pointer"
+                  :class="{ 
+                    'hover:fill-red-400':!BookmarkFlg[shop.place_id],
+                    'fill-white':!BookmarkFlg[shop.place_id],
+                    'text-red-500':BookmarkFlg[shop.place_id], 
+                    'fill-red-600':BookmarkFlg[shop.place_id], 
+                  }">
+                    <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                  </svg>
                 </div>
-              </a>
+              </div>
             </div>
             <!-- 店名・住所 -->
             <div class="px-6 py-4">
@@ -89,13 +127,6 @@ watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
                 </svg>
                 <span class="ml-1">6 mins ago</span>
               </span>
-              <!-- 口コミ -->
-              <a href="#!">
-                <div class="bg-indigo-600 px-4 py-2 text-white text-sm
-                hover:bg-white hover:text-indigo-600 transition duration-500 ease-in-out">
-                    Photos
-                </div>
-              </a>
             </div>
           </div>
         </div>

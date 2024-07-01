@@ -5,6 +5,8 @@ import { onMounted, ref } from 'vue';
 import { watch } from 'vue';
 import { useDarkModeStore } from '@/stores/isDarkMode';
 
+import { details } from '@/stores/dummyData.js';//ダミーデータ
+
 let map;
 let infoWindow;
 let service;
@@ -80,39 +82,45 @@ const findRamenNearby = () => {
     type: ['restaurant'], // レストランを検索
     keyword: 'ramen' // キーワードはラーメン
   };
-  service.nearbySearch(request, async (results, status) => {
-    // console.log(results)
-    if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-      // 各検索結果の詳細情報を取得するPromiseの配列を作成
-      const detailsPromises = results.map(results => 
-        new Promise((resolve, reject) => {
-          service.getDetails({placeId: results.place_id, fields: ['name', 'geometry', 'place_id']}, (detail, status) => {
-            if(status === google.maps.places.PlacesServiceStatus.OK) {
-              // console.log(detail)
-              resolve(detail);
-            }else{
-              reject('Detail fetch failed');
-            }
-          });
-        })
-      );
-      try{
-        const details = await Promise.all(detailsPromises);
-        ramenStore.ramenShops = details;//グローバルステイトへ保存
-        // console.log(ramenStore.ramenShops);
-        details.forEach(detail => createMarker(detail));
-      }catch (error) {
-        console.error(error);
-          infoWindow.setPosition(map.getCenter());
-          infoWindow.setContent('ラーメン屋の詳細情報の取得に失敗しました');
-          infoWindow.open(map);
-      }
-    } else {
-      infoWindow.setPosition(map.getCenter());
-      infoWindow.setContent('ラーメン屋が見つかりませんでした');
-      infoWindow.open(map);
-    }
-  });
+  // service.nearbySearch(request, async (results, status) => {
+  //   // console.log(results)
+  //   if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+  //     // 各検索結果の詳細情報を取得するPromiseの配列を作成
+  //     const detailsPromises = results.map(results => 
+  //       new Promise((resolve, reject) => {
+  //         service.getDetails({placeId: results.place_id, fields: ['name', 'geometry', 'place_id']}, (detail, status) => {
+  //           if(status === google.maps.places.PlacesServiceStatus.OK) {
+  //             // console.log(detail)
+  //             resolve(detail);
+  //           }else{
+  //             reject('Detail fetch failed');
+  //           }
+  //         });
+  //       })
+  //     );
+  //     try{
+  //       const details = await Promise.all(detailsPromises);
+  //       ramenStore.ramenShops = details;//グローバルステイトへ保存
+  //       console.log("ダミーデータ",details);
+  //       console.log(ramenStore.ramenShops);
+  //       details.forEach(detail => createMarker(detail));
+  //     }catch (error) {
+  //       console.error(error);
+  //         infoWindow.setPosition(map.getCenter());
+  //         infoWindow.setContent('ラーメン屋の詳細情報の取得に失敗しました');
+  //         infoWindow.open(map);
+  //     }
+  //   } else {
+  //     infoWindow.setPosition(map.getCenter());
+  //     infoWindow.setContent('ラーメン屋が見つかりませんでした');
+  //     infoWindow.open(map);
+  //   }
+  // });
+
+  //ダミーデータ
+  const dummydetails = details;
+  ramenStore.ramenShops = dummydetails;//グローバルステイトへ保存
+  dummydetails.forEach(detail => createMarker(detail));
 }
 
 //マーカー作成処理

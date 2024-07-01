@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BookMark;
 
 class User extends Authenticatable
 {
@@ -63,5 +64,9 @@ class User extends Authenticatable
                 Storage::disk('public')->delete($user->cover_photo);
             }
         });
+    }
+
+    public function bookmarks() {
+        return $this->hasMany(BookMark::class);
     }
 }

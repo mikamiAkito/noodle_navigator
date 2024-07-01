@@ -53,7 +53,7 @@ watch(Hambarg, (newValue) => {
               <Link class="block w-24 text-base md:text-xl" :href="route('profile.edit')">プロフィール</Link>
             </li>
             <li class="cursor-pointer text-white hover:text-slate-300 duration-500 pb-2 font-black text-lg animate-gnaviAnime animate-duration-1000 animate-delay-200 animate-fill-forwards opacity-0">
-              <Link class="block w-24 text-base md:text-xl" :href="a">お気に入り</Link>
+              <Link class="block w-24 text-base md:text-xl" :href="route('bookMark.List')">お気に入り</Link>
             </li>
           </div>
           <li v-else class="cursor-pointer text-white hover:text-slate-300 duration-500 pb-2 font-black text-lg animate-gnaviAnime animate-duration-1000 animate-delay-200 animate-fill-forwards opacity-0">
