@@ -55,6 +55,28 @@ class GoogleMapsController extends Controller
     return response()->json(['message' => "解除完了"]);
   }
 
+  //お気に入り登録確認処理
+  public function bookMarkCheck() {
+    $userId = Auth::id();
+
+    try {
+      $sql = DB::table('noodle_nav.book_marks')
+      ->select('place_id')
+      ->where('user_id', '=', $userId)
+      ->get();
+      if($sql) {
+        $datas = $sql;
+      } else {
+        $datas = "";
+      }
+    } catch(\Exception $e) {
+      Log::error($e);
+      return response()->json(['message' => "エラーが発生しました", $e], 500);
+    }
+
+    return response()->json(['datas' => $datas]);
+  }
+
   //お気に入り一覧ページ
   public function bookMarkList() {
     return Inertia::render('BookMarkList');

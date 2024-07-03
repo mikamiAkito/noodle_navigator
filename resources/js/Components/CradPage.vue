@@ -3,7 +3,7 @@ import { ramenStore } from '@/stores/ramenStore';
 import StarRating from '@/Components/StarRating.vue';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
-import { nextTick, ref, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import axios from 'axios';
 
 const BookmarkFlg = ref({});
@@ -29,6 +29,20 @@ watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
     });
   }
 }, { immediate: true, deep: true });
+
+//お気に入り登録確認
+const bookmarkcheck = async () => {
+  await axios.post("/bookMark-check")
+  .then((response) => {
+    let bookdatas = response.data.datas;
+    bookdatas.forEach(value => {
+      BookmarkFlg.value[value.place_id] = true;
+    });
+  })
+  .catch((error) => {
+    alert(error);
+  })
+}
 
 //お気に入り登録
 const saveAsBookmark = async shop => {
@@ -56,6 +70,10 @@ const saveAsBookmark = async shop => {
     })
   }
 };
+
+onMounted(() => {
+  bookmarkcheck();
+})
 </script>
 
 <template>

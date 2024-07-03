@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookMark', [GoogleMapsController::class, 'bookMarkEvent'])->name('bookMark.Event');
     Route::get('/bookMark-List', [GoogleMapsController::class, 'bookMarkList'])->name('bookMark.List');
     Route::post('/bookMark-delete', [GoogleMapsController::class, 'bookMarkDelete'])->name('bookMark.Delete');
+    Route::post('/bookMark-check', [GoogleMapsController::class, 'bookMarkCheck'])->name('bookMark.Check');
 });
 
 require __DIR__ . '/auth.php';
