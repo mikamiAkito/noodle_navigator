@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/vue3';
 const props = defineProps({
   inLogin: Boolean,
   inRegister: Boolean,
+  loginCheck: Boolean
 });
 
 const Hambarg = ref(false);
@@ -48,7 +49,7 @@ watch(Hambarg, (newValue) => {
       </div>
       <div id="g-nav" v-show="Hambarg" class="fixed z-30 right-12 top-12"><!--v-bindが効いていないので修正必要-->
         <ul class="opacity-0 fixed top-6 md:top-12 right-4 md:right-7" :class="{'opacity-100':Hambarg}">
-          <div v-if="$page.props.auth.user">
+          <div v-if="props.loginCheck">
             <li class="cursor-pointer text-white hover:text-slate-300 duration-500 pb-2 font-black text-lg animate-gnaviAnime animate-duration-1000 animate-delay-200 animate-fill-forwards opacity-0">
               <Link class="block w-24 text-base md:text-xl" :href="route('profile.edit')">プロフィール</Link>
             </li>

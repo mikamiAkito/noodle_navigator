@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\GoogleMapsController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ Route::get('/noodle-nav', function () {
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'googlemaps' => env('GOOGLE_MAPS_API_KEY'),
+        'isLogin' => Auth::check(),
     ]);
 })->name('noodlenav');
 

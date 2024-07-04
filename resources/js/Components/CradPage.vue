@@ -8,6 +8,10 @@ import axios from 'axios';
 
 const BookmarkFlg = ref({});
 
+const props = defineProps({
+  loginCheck: Boolean
+});
+
 //ラーメン屋検索処理後にSwiper実施
 watch(() => ramenStore.ramenShops, (newVal, oldVal) => {
   if(newVal && newVal.length > 0){
@@ -72,7 +76,9 @@ const saveAsBookmark = async shop => {
 };
 
 onMounted(() => {
-  bookmarkcheck();
+  if(props.loginCheck) {
+    bookmarkcheck();
+  }
 })
 </script>
 

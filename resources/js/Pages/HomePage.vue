@@ -8,6 +8,7 @@ import { onMounted, ref, watch } from 'vue';
 const props = defineProps({
   canLogin: Boolean,
   canRegister: Boolean,
+  isLogin: Boolean,
 });
 
 const topButtonOpacity = ref(false);
@@ -31,9 +32,9 @@ onMounted(() => {
 
 <template>
   <div>
-    <HeaderPage :in-login="canLogin" :in-register="canRegister"/>
+    <HeaderPage :in-login="canLogin" :in-register="canRegister" :login-check="isLogin"/>
     <GoogleMap/>
-    <CradPage/>
+    <CradPage :login-check="isLogin"/>
     <!-- トップ遷移ボタン -->
     <div id="top_button" class="fixed -bottom-14 right-3 duration-700 opacity-0 hover:animate-pulse animate-duration-1000 z-10"
     :class="{
