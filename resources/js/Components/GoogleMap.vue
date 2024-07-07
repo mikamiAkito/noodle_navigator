@@ -244,9 +244,11 @@ watch(MapsMode, (newValue) => {
   if(newValue.isDarkMode === true){
     mapStyle.value = "a6388723669eb9cc";
     initMap();
+    getCurrentlocation();
   }else{
     mapStyle.value = "DEMO_MAP_ID";
     initMap();
+    getCurrentlocation();
   }
 });
 

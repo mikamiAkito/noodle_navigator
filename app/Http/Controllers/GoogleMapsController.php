@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GoogleMapsService;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
@@ -11,22 +12,21 @@ use Inertia\Inertia;
 
 class GoogleMapsController extends Controller
 {
+  protected $googlemapsservice;
+
+  public function __construct(GoogleMapsService $googlemapsservice)
+  {
+    $this->googlemapsservice = $googlemapsservice;
+  }
+
   //お気に入り登録処理
   public function bookMarkEvent(Request $request) {
     $datas = $request->input('params');
     $userId = Auth::id();
 
-    DB::beginTransaction();
     try {
-      DB::table('noodle_nav.book_marks')->insert([
-        'place_id' => $datas['place_id'],
-        'name' => $datas['name'],
-        'user_id' => $userId
-      ]);
-      DB::commit();
+      $this->googlemapsservice->bookMarkEvent($datas, $userId);
     } catch(\Exception $e) {
-      Log::error($e);
-      DB::rollBack();
       return response()->json(['message' => "エラーが発生しました", $e], 500);
     }
 
@@ -38,17 +38,9 @@ class GoogleMapsController extends Controller
     $datas = $request->input('params');
     $userId = Auth::id();
 
-    DB::beginTransaction();
     try {
-      DB::table('noodle_nav.book_marks')
-      ->where([
-        ['user_id', '=', $userId],
-        ['place_id', '=', $datas['place_id']],
-      ])->delete();
-      DB::commit();
+      $this->googlemapsservice->bookMarkDelete($datas, $userId);
     } catch(\Exception $e) {
-      Log::error($e);
-      DB::rollBack();
       return response()->json(['message' => "エラーが発生しました", $e], 500);
     }
 
@@ -60,17 +52,13 @@ class GoogleMapsController extends Controller
     $userId = Auth::id();
 
     try {
-      $sql = DB::table('noodle_nav.book_marks')
-      ->select('place_id')
-      ->where('user_id', '=', $userId)
-      ->get();
+      $sql = $this->googlemapsservice->bookMarkCheck($userId);
       if($sql) {
         $datas = $sql;
       } else {
         $datas = "";
       }
     } catch(\Exception $e) {
-      Log::error($e);
       return response()->json(['message' => "エラーが発生しました", $e], 500);
     }
 
@@ -79,6 +67,21 @@ class GoogleMapsController extends Controller
 
   //お気に入り一覧ページ
   public function bookMarkList() {
-    return Inertia::render('BookMarkList');
+    $userId = Auth::id();
+
+    try {
+      $sql = $this->googlemapsservice->bookMarkCheck($userId);
+      if($sql) {
+        $datas = $sql;
+      } else {
+        $datas = "";
+      }
+    } catch(\Exception $e) {
+      return response()->json(['message' => "エラーが発生しました", $e], 500);
+    }
+
+    return Inertia::render('BookMarkList', [
+      'bookMarkItems' => $datas
+    ]);
   }
 }
