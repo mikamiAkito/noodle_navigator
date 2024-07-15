@@ -6,12 +6,14 @@ import FooterPage from '@/Components/FooterPage.vue';
 import { onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
-  canLogin: Boolean,
-  canRegister: Boolean,
-  isLogin: Boolean,
+  canLogin: {type: Boolean, default: false},
+  canRegister: {type: Boolean, default: false},
+  isLogin: {type: Boolean, default: false},
+  placeId: {type: String, default: 'NOTID'},
 });
 
 const topButtonOpacity = ref(false);
+const googlemaps = ref(null);
 
 //topへ戻る
 const topScrollButton = () => {
@@ -28,12 +30,22 @@ onMounted(() => {
     };
   });
 });
+
+//お気に入りからのアクセスかチェック
+onMounted(() => {
+  if(props.placeId === 'NOTID') {
+    console.log('プレースID無し');
+  } else {
+    console.log('プレースIDあり');
+    googlemaps.value.findRamenNearby(props.placeId);
+  }
+});
 </script>
 
 <template>
   <div>
     <HeaderPage :in-login="canLogin" :in-register="canRegister" :login-check="isLogin"/>
-    <GoogleMap/>
+    <GoogleMap ref="googlemaps"/>
     <CradPage :login-check="isLogin"/>
     <!-- トップ遷移ボタン -->
     <div id="top_button" class="fixed -bottom-14 right-3 duration-700 opacity-0 hover:animate-pulse animate-duration-1000 z-10"

@@ -50,6 +50,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookMark-List', [GoogleMapsController::class, 'bookMarkList'])->name('bookMark.List');
     Route::post('/bookMark-delete', [GoogleMapsController::class, 'bookMarkDelete'])->name('bookMark.Delete');
     Route::post('/bookMark-check', [GoogleMapsController::class, 'bookMarkCheck'])->name('bookMark.Check');
+    Route::get('/bookMark-select/{placeId}', function ($placeId) {
+        return Inertia::render('HomePage', [
+            'placeId' => $placeId ? $placeId : 'NOTID',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'googlemaps' => env('GOOGLE_MAPS_API_KEY'),
+            'isLogin' => Auth::check(),
+        ]);
+    })->name('bookMark.Select');
 });
 
 require __DIR__ . '/auth.php';

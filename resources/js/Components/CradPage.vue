@@ -5,6 +5,7 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import { nextTick, onMounted, ref, watch } from 'vue';
 import axios from 'axios';
+import { Link } from '@inertiajs/vue3';
 
 const BookmarkFlg = ref({});
 
@@ -75,6 +76,7 @@ const saveAsBookmark = async shop => {
   }
 };
 
+//ログイン時お気に入り投稿確認へ
 onMounted(() => {
   if(props.loginCheck) {
     bookmarkcheck();
@@ -104,7 +106,7 @@ onMounted(() => {
                 <div class="swiper-button-next"></div>
               </div>
               <!-- お気に入り登録 -->
-              <div v-show="$page.props.auth.user">
+              <div v-show="props.loginCheck">
                 <div @click="saveAsBookmark(shop)">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" 
                   class="size-6 text-sm absolute top-0 right-0 px-4 h-16 w-16 z-10 text-indigo-600

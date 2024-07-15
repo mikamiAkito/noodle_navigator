@@ -70,57 +70,63 @@ const getCurrentlocation = async () => {
 };
 
 //ラーメン屋情報取得処理
-const findRamenNearby = () => {
-  //マーカーをリセット
-  for(let marker of markers){
-    marker.setMap(null);
-  }
-  markers = [];
-  const bounds = map.getBounds();
-  const request = {
-    bounds: bounds,//画面内を検索
-    type: ['restaurant'], // レストランを検索
-    keyword: 'ramen' // キーワードはラーメン
-  };
-  // service.nearbySearch(request, async (results, status) => {
-  //   // console.log(results)
-  //   if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-  //     // 各検索結果の詳細情報を取得するPromiseの配列を作成
-  //     const detailsPromises = results.map(results => 
-  //       new Promise((resolve, reject) => {
-  //         service.getDetails({placeId: results.place_id, fields: ['name', 'geometry', 'place_id']}, (detail, status) => {
-  //           if(status === google.maps.places.PlacesServiceStatus.OK) {
-  //             // console.log(detail)
-  //             resolve(detail);
-  //           }else{
-  //             reject('Detail fetch failed');
-  //           }
-  //         });
-  //       })
-  //     );
-  //     try{
-  //       const details = await Promise.all(detailsPromises);
-  //       ramenStore.ramenShops = details;//グローバルステイトへ保存
-  //       console.log("ダミーデータ",details);
-  //       console.log(ramenStore.ramenShops);
-  //       details.forEach(detail => createMarker(detail));
-  //     }catch (error) {
-  //       console.error(error);
-  //         infoWindow.setPosition(map.getCenter());
-  //         infoWindow.setContent('ラーメン屋の詳細情報の取得に失敗しました');
-  //         infoWindow.open(map);
-  //     }
-  //   } else {
-  //     infoWindow.setPosition(map.getCenter());
-  //     infoWindow.setContent('ラーメン屋が見つかりませんでした');
-  //     infoWindow.open(map);
-  //   }
-  // });
+const findRamenNearby = (flg) => {
+  if (flg === 0) {
+    //マーカーをリセット
+    for(let marker of markers){
+      marker.setMap(null);
+    }
+    markers = [];
+    const bounds = map.getBounds();
+    const request = {
+      bounds: bounds,//画面内を検索
+      type: ['restaurant'], // レストランを検索
+      keyword: 'ramen' // キーワードはラーメン
+    };
+  
+    // service.nearbySearch(request, async (results, status) => {
+    //   // console.log(results)
+    //   if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+    //     // 各検索結果の詳細情報を取得するPromiseの配列を作成
+    //     const detailsPromises = results.map(results => 
+    //       new Promise((resolve, reject) => {
+    //         service.getDetails({placeId: results.place_id, fields: ['name', 'geometry', 'place_id']}, (detail, status) => {
+    //           if(status === google.maps.places.PlacesServiceStatus.OK) {
+    //             // console.log(detail)
+    //             resolve(detail);
+    //           }else{
+    //             reject('Detail fetch failed');
+    //           }
+    //         });
+    //       })
+    //     );
+    //     try{
+    //       const details = await Promise.all(detailsPromises);
+    //       ramenStore.ramenShops = details;//グローバルステイトへ保存
+    //       console.log("ダミーデータ",details);
+    //       console.log(ramenStore.ramenShops);
+    //       details.forEach(detail => createMarker(detail));
+    //     }catch (error) {
+    //       console.error(error);
+    //         infoWindow.setPosition(map.getCenter());
+    //         infoWindow.setContent('ラーメン屋の詳細情報の取得に失敗しました');
+    //         infoWindow.open(map);
+    //     }
+    //   } else {
+    //     infoWindow.setPosition(map.getCenter());
+    //     infoWindow.setContent('ラーメン屋が見つかりませんでした');
+    //     infoWindow.open(map);
+    //   }
+    // });
 
-  //ダミーデータ
-  const dummydetails = details;
-  ramenStore.ramenShops = dummydetails;//グローバルステイトへ保存
-  dummydetails.forEach(detail => createMarker(detail));
+    //ダミーデータ
+    const dummydetails = details;
+    ramenStore.ramenShops = dummydetails;//グローバルステイトへ保存
+    dummydetails.forEach(detail => createMarker(detail));
+  } else {
+    //お気に入りからのアクセスの場合
+    console.log("お気に入り一覧表示");
+  }
 }
 
 //マーカー作成処理
@@ -219,6 +225,11 @@ const handleLocationError = (browserHasGeolocation, infoWindow, pos) => {
   infoWindow.open(map);
 }
 
+//$refsするメソッド
+defineExpose({
+  findRamenNearby,
+});
+
 //各メソッドを実行
 onMounted( async () => {
   //初期処理実行
@@ -299,7 +310,7 @@ watch(station, (newValue) => {
     </button>
     <!--クリック時ラーメン屋表示-->
     <button id="ramen-search" class="bg-white transition duration-700 hover:bg-green-400 shadow-md w-10 h-10 rounded-sm m-2.5 absolute top-[325px] right-0" 
-    @click="findRamenNearby"
+    @click="findRamenNearby(0)"
     >
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" class="fill-green-500 w-full h-2/3">
           <path class="st0" d="M316.766,60.625c0-7.953-6.453-14.406-14.406-14.406c-7.969,0-14.406,6.453-14.406,14.406v7.109h-24.188v-7.109c0-7.953-6.453-14.406-14.391-14.406c-7.969,0-14.422,6.453-14.422,14.406v7.109h-24.172v-7.109c0-7.953-6.438-14.406-14.406-14.406c-7.953,0-14.406,6.453-14.406,14.406v7.109h-44.484v30.797l44.484,1.125v116H2.828v16.469c-0.016,62.688,24.391,121.594,68.719,165.891c22.828,22.828,49.547,40.406,79.453,52.266V512h172.859v-61.719c29.922-11.859,56.641-29.438,79.453-52.266c44.328-44.297,68.719-103.203,68.719-165.891v-16.469H316.766V103.125l192.406,4.938V67.734H316.766V60.625z M210.781,100.406l24.172,0.625v114.625h-24.172V100.406z M295.047,483.188H179.813v-27.844c18.422,4.75,37.719,7.281,57.625,7.266c19.875,0.016,39.188-2.516,57.609-7.266V483.188z M382.953,377.641c-37.297,37.266-88.656,60.266-145.516,60.266c-56.875,0-108.25-23-145.531-60.266c-34.531-34.563-56.813-81.234-59.891-133.172h410.828C439.781,296.406,417.5,343.078,382.953,377.641z M287.953,215.656h-24.188V101.766l24.188,0.625V215.656z"></path>
