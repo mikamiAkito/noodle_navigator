@@ -37,7 +37,8 @@ onMounted(() => {
     console.log('プレースID無し');
   } else {
     console.log('プレースIDあり');
-    googlemaps.value.findRamenNearby(props.placeId);
+    googlemaps.value = props.placeId;
+    // googlemaps.value.findRamenNearby(props.placeId);
   }
 });
 </script>
@@ -45,7 +46,7 @@ onMounted(() => {
 <template>
   <div>
     <HeaderPage :in-login="canLogin" :in-register="canRegister" :login-check="isLogin"/>
-    <GoogleMap ref="googlemaps"/>
+    <GoogleMap :google-maps="googlemaps"/>
     <CradPage :login-check="isLogin"/>
     <!-- トップ遷移ボタン -->
     <div id="top_button" class="fixed -bottom-14 right-3 duration-700 opacity-0 hover:animate-pulse animate-duration-1000 z-10"
