@@ -129,6 +129,10 @@ const findRamenNearby = async (flg) => {
       service.getDetails({placeId: flg, fields: ['name', 'geometry', 'place_id']}, (detail, status) => {
         if(status === google.maps.places.PlacesServiceStatus.OK) {
           ramenStore.ramenShops = [detail];//配列に変換しグローバルステイとへ保存
+          //お気に入り店舗へ画面遷移＆マーカー設置
+          const setposition = detail.geometry.location;
+          map.setCenter(setposition);
+          map.setZoom(15);
           createMarker(detail);
         } else {
           alert('スタッツエラーが発生しました');
@@ -245,11 +249,12 @@ onMounted( async () => {
   await initMap();
   //駅検索ウィンドウのオートコンプリートを実行
   await stationModal();
-  //ロード時現在地へ
-  await getCurrentlocation();
   //お気に入りからの場合
   if(props.googleMaps) {
     await findRamenNearby(props.googleMaps);
+  } else {
+    //ロード時現在地へ
+    await getCurrentlocation();
   }
 });
 

@@ -78,6 +78,8 @@ const saveAsBookmark = async shop => {
 
 //ログイン時お気に入り投稿確認へ
 onMounted(() => {
+  //グローバルステイト初期化
+  ramenStore.ramenShops = [];
   if(props.loginCheck) {
     bookmarkcheck();
   }
